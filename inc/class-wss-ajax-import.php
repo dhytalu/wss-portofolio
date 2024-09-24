@@ -13,6 +13,7 @@ class Wss_Portofolio_Ajax_Import {
 
         // Hook untuk menambahkan ajax
         add_action('wp_ajax_wss_portofolio_import', [$this, 'ajax']);
+        add_action('wp_ajax_wss_portofolio_compare', [$this, 'ajax_portofolio']);
     }
 
     private function api($item){
@@ -32,7 +33,7 @@ class Wss_Portofolio_Ajax_Import {
         // Decode the JSON response
         $data = json_decode($body, true);
 
-        return $body; // Return or process the data as needed
+        return $data; // Return or process the data as needed
 
     }
 
@@ -40,11 +41,39 @@ class Wss_Portofolio_Ajax_Import {
         $item = sanitize_post($_POST['item']);
         $data = $this->api($item);
 
-        $return = array(
-            'data'  => $data,
-            'item'  => $item
-        );
+        $return = [
+            'item' => $item,
+            'data' => $data
+        ];
+
+        if($item=='jenis-web'){           
+            $terms = get_terms([
+                'taxonomy' => 'kategori-portofolio',
+                'hide_empty' => false,
+            ]);
+            foreach ($terms as $term){
+                $return['compare'][] = [
+                    'slug' => $term->slug,
+                    'category' => $term->name,
+                    'count' => $term->count,
+                ];
+            }
+        }    
+
         wp_send_json($return);
+    }
+
+    public function ajax_portofolio(){
+        
+        //get wp_query post 'portofolio'
+        $args = array(
+            'post_type' => 'portofolio',
+            'posts_per_page' => -1,
+        );
+        $query = new WP_Query($args);
+        $posts = $query->posts;
+
+
     }
 
 }
