@@ -37,43 +37,59 @@ class Wss_Portofolio_Ajax_Import {
 
     }
 
+    
+    public function kategori_portofolio($data){
+
+        $return = [];
+        
+        $data_terms = [];
+        $terms = get_terms([
+            'taxonomy' => 'kategori-portofolio',
+            'hide_empty' => false,
+        ]);
+        foreach ($terms as $term){
+            $data_terms['slug'][] = $term->slug;
+            $data_terms['category'][] = $term->name;
+        }
+
+        foreach ($data as $k => $d) {
+            $status = 'Sudah Ada';
+            $slug = $d['slug'];
+            $category = $d['category'];
+            if(!in_array($slug, $data_terms['slug']) && !in_array($category, $data_terms['category'])){
+                wp_insert_term(
+                    $category,   // the term 
+                    'kategori-portofolio', // the taxonomy
+                    array(
+                        'description' => '',
+                        'slug'        => $slug,
+                    )
+                );
+                $status = 'Berhasil ditambahkan';
+            }
+            $return[$k] = [
+                'slug' => $slug,
+                'category' => $category,
+                'status' => $status,
+            ];
+        }
+
+        return $return;
+    }
+
     public function ajax(){
         $item = sanitize_post($_POST['item']);
         $data = $this->api($item);
 
         $return = [
             'item' => $item,
-            'data' => $data
         ];
 
-        if($item=='jenis-web'){           
-            $terms = get_terms([
-                'taxonomy' => 'kategori-portofolio',
-                'hide_empty' => false,
-            ]);
-            foreach ($terms as $term){
-                $return['compare'][] = [
-                    'slug' => $term->slug,
-                    'category' => $term->name,
-                    'count' => $term->count,
-                ];
-            }
-        }    
+        if($item=='jenis-web'){          
+            $return['data'] = $this->kategori_portofolio($data);
+        }
 
         wp_send_json($return);
-    }
-
-    public function ajax_portofolio(){
-        
-        //get wp_query post 'portofolio'
-        $args = array(
-            'post_type' => 'portofolio',
-            'posts_per_page' => -1,
-        );
-        $query = new WP_Query($args);
-        $posts = $query->posts;
-
-
     }
 
 }

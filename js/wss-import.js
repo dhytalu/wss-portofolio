@@ -1,42 +1,4 @@
 jQuery(function($){
-
-    function run_compare(jsonData){        
-
-        // Loop melalui setiap baris tabel
-        $('#tabledata tbody tr').each(function(index, row) {
-
-            // Ambil nilai dari setiap td berdasarkan kelas
-            var values = {};
-            $(row).find('td').each(function() {
-                var key = $(this).attr('class'); // Dapatkan kelas sebagai key
-                var value = $(this).text(); // Dapatkan teks sebagai value
-                if(key){
-                    values[key] = value; // Simpan dalam objek
-                }
-            });
-
-            // Bandingkan dengan data JSON
-            var found = jsonData.some(function(item) {
-                return Object.keys(values).every(function(key) {
-                    return item[key] == values[key]; // Bandingkan setiap key
-                });
-            });
-
-            // Tindakan jika data ditemukan
-            if (found) {
-                $(row).find('td:first-child input').attr('checked', false);
-                $(row).find('td:last-child').text('Tersedia');
-            } else {
-                $(row).find('td:first-child input').attr('checked', true);
-                $(row).find('td:last-child').text('Tidak Tersedia');
-                $(row).css('background-color', '#e3fde9'); // Tandai dengan warna hijau
-            }
-
-        });
-
-        //prepend
-        $('.wss-result-ajax').prepend('<button id="import-data" class="button button-primary">Import Data</button><br>');
-    }
     
     //proses import jenis
     function load_jenis(data,compare){
@@ -49,28 +11,25 @@ jQuery(function($){
         var table = '<table id="tabledata" class="wp-list-table widefat fixed striped table-view-list posts">';
         table += '<thead>';
             table += '<tr>';
-                table += `<th></th>`;
                 table += `<th>No</th>`;
                 table += `<th>Kategori</th>`;
                 table += `<th>Slug</th>`;
-                table += `<th></th>`;
+                table += `<th>Status</th>`;
             table += '</tr>';
         table += '</thead>';
 
         table += '</tbody>';
         data.forEach((item, index) => {
+            var check = item.exist == false?'checked':'';
             table += `<tr>`;
-                table += `<td><input type="checkbox" name="data[]" value='${JSON.stringify(item)}'></td>`;
                 table += `<td>${index+1}</td>`;
-                table += `<td class="category">${item.category}</td>`;
-                table += `<td class="slug">${item.slug}</td>`;
-                table += `<td></td>`;
+                table += `<td>${item.category}</td>`;
+                table += `<td>${item.slug}</td>`;
+                table += `<td>${item.status}</td>`;
             table += '</tr>';
         });
         table += '</tbody></table>';
         $('.wss-result-ajax').html(table);
-
-        run_compare(compare);
     }
     
     function load_porto(data){
@@ -129,7 +88,7 @@ jQuery(function($){
                 success: function(response) {
                     // Tindak lanjut setelah berhasil
                     if(item == 'jenis-web'){
-                        load_jenis(response.data,response.compare);
+                        load_jenis(response.data);
                     } else {
                         load_porto(response.data);
                     }
