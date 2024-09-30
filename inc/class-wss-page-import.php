@@ -31,6 +31,7 @@ class Wss_Portofolio_Page_import {
     }
 
     public function create_admin_page() {
+        add_thickbox();
         ?>
         <div class="wrap">
             <h1>Import Portofolio</h1>
