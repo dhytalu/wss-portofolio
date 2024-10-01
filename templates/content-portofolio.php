@@ -23,5 +23,9 @@ defined( 'ABSPATH' ) || exit;
             );
         ?>
 
+        <div>
+            <?php echo do_shortcode('[wportos-button-preview]'); ?>
+        </div>
+
     </div>
 </article>
