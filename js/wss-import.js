@@ -34,9 +34,14 @@ jQuery(function($){
 
     function processImportPost(articles) {
         let index = 0;
-        $('.wss-result-ajax').prepend('<p class="prosesimport">Proses import portofolio...</p>'); 
+        $('.wss-result-ajax').prepend('<div class="prosesimport"><span>Proses import portofolio...</span><div class="progress"></div></div>'); 
 
         function sendArticle() {
+            var total = articles.length;
+            var persen = total/index;
+            persen = 100-persen;
+            $('.prosesimport .progress').css('width', persen+'%');
+
             if (index < articles.length) {
                 const artikelId = articles[index].id;
                 
@@ -64,7 +69,9 @@ jQuery(function($){
                 
             } else {
                 console.log('Semua portofolio telah diproses.');
-                $('.wss-result-ajax .prosesimport').html('Semua portofolio telah diproses');             
+                $('.wss-result-ajax .prosesimport span').html('Semua portofolio telah diproses'); 
+                $('.prosesimport .progress').css('width', '100%');
+                $('.prosesimport').addClass('success');
             }
         }
 

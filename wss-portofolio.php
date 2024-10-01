@@ -32,3 +32,20 @@ require plugin_dir_path(__FILE__) . 'inc/class-wss-portofolio-post.php';
 require plugin_dir_path(__FILE__) . 'inc/class-wss-page-import.php';
 require plugin_dir_path(__FILE__) . 'inc/class-wss-page-settings.php';
 require plugin_dir_path(__FILE__) . 'inc/class-wss-ajax-import.php';
+
+/**
+ * Load theme's JavaScript and Style sources.
+ */
+if (!function_exists('wssportofolio_register_scripts')) {
+	function wssportofolio_register_scripts() {
+		// Get the version.
+		$the_version = WSS_PORTOFOLIO_VERSION;
+		if (defined('WP_DEBUG') && true === WP_DEBUG) {
+			$the_version = $the_version.'.'.time();
+		}
+
+		wp_enqueue_style('portofolio-style', WSS_PORTOFOLIO_PLUGIN_URL . 'css/style.css', array(), $the_version, false);
+
+	}
+	add_action('wp_enqueue_scripts', 'wssportofolio_register_scripts',25);
+}

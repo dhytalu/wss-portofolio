@@ -147,6 +147,7 @@ class Wss_Portofolio_Ajax_Import {
 
             //tambahkan meta post
             update_post_meta($post_id, 'portofolio_wss_id', $data['id']);
+            update_post_meta($post_id, 'portofolio_wss_preview', $data['url_live_preview']);
             update_post_meta($post_id, 'portofolio_wss_last_modified', $data['last_modified']);
             update_post_meta($post_id, 'portofolio_wss_screenshot', $data['screenshot']);
 

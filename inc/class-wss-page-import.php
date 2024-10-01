@@ -54,6 +54,34 @@ class Wss_Portofolio_Page_import {
             <br>
             <br>
             <div class="wss-result-ajax"></div>
+
+            <style>
+                .prosesimport {
+                    position: relative;
+                    background-color: #ffffff;
+                    padding: 1rem;
+                    margin-bottom: 1rem;
+                }
+                .prosesimport .progress {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    width: 0%;
+                    background-color: #bae2fe;
+                    z-index: 1;
+                    transition: all 1s;
+                }
+                .prosesimport.success .progress {
+                    background-color: #bffeba;
+                }
+                .prosesimport span {
+                    position: relative;
+                    z-index: 2;
+                }
+            </style>
+
         </div>
         <?php
     }

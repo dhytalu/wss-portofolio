@@ -1,0 +1,37 @@
+.wportos-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+.wportos-col {
+    flex: 0 0 auto;
+    width: 100%;
+}
+.wportos-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 1rem;
+}
+img.wportos-thumb {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1.4;
+    object-fit: cover;
+}
+.wportos-title {
+    font-size: 1.25rem;
+    line-height: 1.8rem;
+    margin: 1rem 0;
+}
+
+@media (min-width: 768px) {    
+    .wportos-col {
+        width: 50%;
+    }
+}
+@media (min-width: 1000px) {    
+    .wportos-col {
+        width: 33.33333333%;
+    }
+}
