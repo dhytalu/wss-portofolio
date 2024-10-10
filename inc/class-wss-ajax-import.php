@@ -8,7 +8,7 @@ class Wss_Portofolio_Ajax_Import {
     public function __construct() {
 
         $options = get_option('wss_portofolio');
-        $this->access_key = $options['access_key'];
+        $this->access_key = isset($options['access_key'])?$options['access_key']:'';
         $this->api_url = 'https://my.websweetstudio.com/wp-json/wp/v2/';
 
         // Hook untuk menambahkan ajax
