@@ -42,7 +42,12 @@ class Wss_Portofolio_Ajax_Import {
 
         $return = [];
         
-        $data_terms = [];
+        // Ambil semua terms yang ada di taksonomi 'kategori-portofolio'
+        $data_terms = [
+            'slug' => [],
+            'category' => []
+        ];
+        
         $terms = get_terms([
             'taxonomy' => 'kategori-portofolio',
             'hide_empty' => false,
